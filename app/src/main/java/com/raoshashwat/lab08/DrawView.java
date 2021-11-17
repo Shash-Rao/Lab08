@@ -5,50 +5,94 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.util.Random;
+
 public class DrawView extends View
 {
     int dDeg = 1;
     int deg = 130;
+    float dDeg2 = 0.1f;
+    float deg2 = 0;
+    int numStars = 90;
+    int[][] stars = new int[numStars][2];
+
     public DrawView(Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
+        Random rand = new Random();
+        int randX;
+        int randY;
+        for (int i = 0; i < numStars; i ++)
+        {
+            randX = rand.nextInt(1400);
+            randY = rand.nextInt(1600);
+            stars[i][0] = randX;
+            stars[i][1] = randY;
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas)
     {
+        int x;
+        int delX;
+        int y;
+        int delY;
+        int mainX;
+        int mainY;
+
         super.onDraw(canvas);   //Setup
         Paint p = new Paint();
         p.setAntiAlias(true);
-        int mainX = 0;
-        int mainY = 0;
+        mainX = 0;
+        mainY = 0;
 
         canvas.drawColor(Color.BLACK);  //Background
+        p.setColor(Color.WHITE);
+        for (int[] coord: stars)    //Stars
+        {
+            canvas.drawCircle(coord[0], coord[1], 5f, p);
+        }
 
         p.setColor(Color.GRAY); //Moon
         canvas.drawCircle(545, 2700, 1500f, p);
 
+        x = 200;
+        delX = 20;
+        y = 1000;
+        delY = 250;
+        canvas.save();
+        canvas.rotate(-15, x + delX/y, y);
+        p.setColor(Color.DKGRAY);
+        canvas.drawRect(x, y, x + delX, y + delY, p);   //Flagpole
+        int x2 = 50;
+        int delX2 = 150;
+        int y2 = 1000;
+        int delY2 = 100;
+        p.setColor(Color.WHITE);
+        canvas.drawRect(x2, y2, x2 + delX2, y + delY2, p);  //Flag
+        canvas.restore();
+
         //Astronaut
         p.setColor(Color.WHITE);
-        int x = 545 + mainX;
-        int y = 900 + mainY;
-        canvas.drawCircle(x, y, 110f, p);   //Helmet
+        x = 545 + mainX;
+        y = 900 + mainY;
+        float rad = 110;
+        canvas.drawCircle(x, y, rad, p);   //Helmet
         p.setColor(0xFFFFCBA4);
-        canvas.drawCircle(x, y, 78f, p);
-        p.setColor(0x90C9C9C9);
-        canvas.drawCircle(x, y, 90f, p);
-        p.setColor(Color.WHITE);
-        x = 435 + mainX;
-        int delX = 220;
-        y = 990 + mainY;
-        int delY = 300;
-        canvas.drawRect(x, y, x + delX, y + delY, p);   //Body
+        rad = 78;
+        canvas.drawCircle(x, y, rad, p);
+        //p.setColor(0x90C9C9C9);
+        p.setColor(0xFFA0A0A0);
+        rad = 90;
+        canvas.drawCircle(x, y, rad, p);
 
         x = 400 + mainX;
         delX = 100;
@@ -56,10 +100,10 @@ public class DrawView extends View
         delY = 350;
         canvas.save();
         canvas.rotate(deg, x + delX/2, y);
-        int x2 = 410 + mainX;
-        int delX2 = 80;
-        int y2 = 1370 + mainY;
-        int delY2 = 70;
+        x2 = 410 + mainX;
+        delX2 = 80;
+        y2 = 1370 + mainY;
+        delY2 = 70;
         p.setColor(Color.DKGRAY);
         canvas.drawRect(x2, y2, x2 + delX2, y2 + delY2, p);   //Left Hand
         p.setColor(Color.WHITE);
@@ -86,19 +130,69 @@ public class DrawView extends View
         canvas.drawRect(x, y, x + delX, y + delY, p);   //Right Arm
         canvas.restore();
 
+        x = 435 + mainX;
+        delX = 220;
+        y = 990 + mainY;
+        delY = 300;
+        p.setColor(Color.WHITE);
+        canvas.drawRect(x, y, x + delX, y + delY, p);   //Body
+
+        x = 470 + mainX;
+        delX = 155;
+        y = 1070 + mainY;
+        delY = 80;
+        int round = 10;
+        p.setStyle(Paint.Style.STROKE);
+        p.setStrokeWidth(10);
+        p.setColor(Color.DKGRAY);
+        canvas.drawRoundRect(x, y, x + delX, y + delY, round, round, p);
+        p.setStyle(Paint.Style.FILL_AND_STROKE);
+        p.setStrokeWidth(0);
+
+        p.setColor(Color.RED);
+        x = 500 + mainX;
+        y = 1100 + mainY;
+        rad = 20;
+        canvas.drawCircle(x, y, rad, p);    //Red Button
+
+        p.setColor(Color.BLUE);
+        x = 540 + mainX;
+        y = 1095 + mainY;
+        rad = 10;
+        canvas.drawCircle(x, y, rad, p);    //Blue Button 1
+
+        x = 570 + mainX;
+        y = 1095 + mainY;
+        rad = 10;
+        canvas.drawCircle(x, y, rad, p);    //Blue Button 2
+
+        x = 600 + mainX;
+        y = 1095 + mainY;
+        rad = 10;
+        canvas.drawCircle(x, y, rad, p);    //Blue Button 3
+
+        p.setColor(Color.DKGRAY);
+        x = 530 + mainX;
+        delX = 80;
+        y = 1110 + mainY;
+        delY = 20;
+        round = 10;
+        canvas.drawRoundRect(x, y, x + delX, y + delY, round, round, p);
+
         x = 280 + mainX;
         delX = 180;
         y = 1680 + mainY;
         delY = 85;
+        round = 30;
         p.setColor(Color.DKGRAY);
-        canvas.drawRoundRect(x, y, x + delX, y + delY, 30, 30, p);  //Left Foot
+        canvas.drawRoundRect(x, y, x + delX, y + delY, round, round, p);  //Left Foot
 
         x = 630 + mainX;
         delX = 180;
         y = 1680 + mainY;
         delY = 85;
         p.setColor(Color.DKGRAY);
-        canvas.drawRoundRect(x, y, x + delX, y + delY, 30, 30, p);  //Right Foot
+        canvas.drawRoundRect(x, y, x + delX, y + delY, round, round, p);  //Right Foot
 
         x = 585 + mainX;
         delX = 120;
@@ -131,6 +225,50 @@ public class DrawView extends View
         path.lineTo(x + 225,y - 50);
         path.close();
         canvas.drawPath(path, p);
+
+        x = 420;
+        delX = 250;
+        y = 290;
+        delY = 120;
+        canvas.save();
+        canvas.rotate(deg2, 545, 2700);
+        p.setColor(Color.RED);
+        canvas.drawRect(x, y, x + delX, y + delY, p);
+        p.setColor(0xFF940000);
+        Path path2 = new Path();
+        path2.moveTo(x + delX, y);
+        path2.lineTo(x + delX + 50, y + delY/2);
+        path2.lineTo(x + delX, y + delY);
+        path2.moveTo(x, y);
+        path2.lineTo(x - 50, y - 50);
+        path2.lineTo(x - 50 + 45, y - 50);
+        path2.lineTo(x + 100, y);
+        path2.moveTo(x, y + delY);
+        path2.lineTo(x - 50, y + delY + 50);
+        path2.lineTo(x - 50 + 45, y + delY + 50);
+        path2.lineTo(x + 100, y + delY);
+        path2.close();
+        canvas.drawPath(path2, p);
+        p.setColor(Color.LTGRAY);
+        Path path3 = new Path();
+        path3.moveTo(x, y + 15);
+        path3.lineTo(x - 15, y + 10 - 5);
+        path3.lineTo(x - 15, y + delY - 10 + 5);
+        path3.lineTo(x, y + delY - 15);
+        path3.close();
+        canvas.drawPath(path3, p);
+        canvas.restore();
+
+        deg2 += dDeg2;
+        deg2 %= 360;
+        if (deg2 <= 355 || deg2 >= 5)   //This line is wrong
+        {
+            dDeg2 = 1;
+        }
+        else
+        {
+            dDeg2 = 0.01f;
+        }
 
         deg += dDeg;
         if (deg >= 145)
