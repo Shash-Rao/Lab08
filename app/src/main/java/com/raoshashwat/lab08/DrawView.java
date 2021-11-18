@@ -18,7 +18,7 @@ public class DrawView extends View
 {
     int dDeg = 1;
     int deg = 130;
-    float dDeg2 = 0.1f;
+    float dDeg2 = 1;
     float deg2 = 0;
     int numStars = 90;
     int[][] stars = new int[numStars][2];
@@ -261,13 +261,13 @@ public class DrawView extends View
 
         deg2 += dDeg2;
         deg2 %= 360;
-        if (deg2 <= 355 || deg2 >= 5)   //This line is wrong
+        if ((deg2 >= 335 && deg2 <= 360) || (deg2 >= 0 && deg2 <= 25))   //This line is wrong
         {
             dDeg2 = 1;
         }
         else
         {
-            dDeg2 = 0.01f;
+            dDeg2 = 6;
         }
 
         deg += dDeg;
