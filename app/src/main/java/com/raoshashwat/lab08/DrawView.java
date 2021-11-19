@@ -16,9 +16,10 @@ import java.util.Random;
 
 public class DrawView extends View
 {
+    int count = 0;
     int dDeg = 1;
     int deg = 130;
-    float dDeg2 = 1;
+    float dDeg2 = 0;
     float deg2 = 0;
     int numStars = 90;
     int[][] stars = new int[numStars][2];
@@ -53,7 +54,9 @@ public class DrawView extends View
         p.setAntiAlias(true);
         mainX = 0;
         mainY = 0;
+        Random rand = new Random();
 
+        count %= 10;
         canvas.drawColor(Color.BLACK);  //Background
         p.setColor(Color.WHITE);
         for (int[] coord: stars)    //Stars
@@ -62,14 +65,14 @@ public class DrawView extends View
         }
 
         p.setColor(Color.GRAY); //Moon
-        canvas.drawCircle(545, 2700, 1500f, p);
+        canvas.drawCircle(545, 4000, 2800f, p);
 
         x = 200;
         delX = 20;
         y = 1000;
         delY = 250;
         canvas.save();
-        canvas.rotate(-15, x + delX/y, y);
+        canvas.rotate(-7, x + delX/y, y);
         p.setColor(Color.DKGRAY);
         canvas.drawRect(x, y, x + delX, y + delY, p);   //Flagpole
         int x2 = 50;
@@ -89,7 +92,6 @@ public class DrawView extends View
         p.setColor(0xFFFFCBA4);
         rad = 78;
         canvas.drawCircle(x, y, rad, p);
-        //p.setColor(0x90C9C9C9);
         p.setColor(0xFFA0A0A0);
         rad = 90;
         canvas.drawCircle(x, y, rad, p);
@@ -108,6 +110,11 @@ public class DrawView extends View
         canvas.drawRect(x2, y2, x2 + delX2, y2 + delY2, p);   //Left Hand
         p.setColor(Color.WHITE);
         canvas.drawRect(x, y, x + delX, y + delY, p);   //Left Arm
+        y = y + 300;
+        delY = delY/18;
+        p.setColor(Color.RED);
+        canvas.drawRect(x, y, x + delX, y + delY, p);   //Bands
+        canvas.drawRect(x, y - 30, x + delX, y - 30 + delY, p);
         canvas.restore();
 
         x = 760 + mainX;
@@ -128,6 +135,11 @@ public class DrawView extends View
         canvas.rotate(-30, x + delX/2, y + delY/2);
         p.setColor(Color.WHITE);
         canvas.drawRect(x, y, x + delX, y + delY, p);   //Right Arm
+        y = y + 300;
+        delY = delY/18;
+        p.setColor(Color.RED);
+        canvas.drawRect(x, y, x + delX, y + delY, p);   //Bands
+        canvas.drawRect(x, y - 30, x + delX, y - 30 + delY, p);
         canvas.restore();
 
         x = 435 + mainX;
@@ -202,6 +214,11 @@ public class DrawView extends View
         canvas.rotate(-15,x + delX/2,y + delY/2);
         p.setColor(Color.WHITE);
         canvas.drawRect(x, y, x + delX, y + delY, p);   //Right Leg
+        y = y + 300;
+        delY = delY/18;
+        p.setColor(Color.RED);
+        canvas.drawRect(x, y, x + delX, y + delY, p);   //Bands
+        canvas.drawRect(x, y - 30, x + delX, y - 30 + delY, p);
         canvas.restore();
 
         x = 390 + mainX;
@@ -209,8 +226,14 @@ public class DrawView extends View
         y = 1350 + mainY;
         delY = 350;
         canvas.save();
+        p.setColor(Color.WHITE);
         canvas.rotate(15,x + delX/2,y + delY/2);
         canvas.drawRect(x, y, x + delX, y + delY, p);   //Left Leg
+        y = y + 300;
+        delY = delY/18;
+        p.setColor(Color.RED);
+        canvas.drawRect(x, y, x + delX, y + delY, p);   //Bands
+        canvas.drawRect(x, y - 30, x + delX, y - 30 + delY, p);
         canvas.restore();
 
         x = 433 + mainX;
@@ -231,7 +254,7 @@ public class DrawView extends View
         y = 290;
         delY = 120;
         canvas.save();
-        canvas.rotate(deg2, 545, 2700);
+        canvas.rotate(deg2, 545, 4000);
         p.setColor(Color.RED);
         canvas.drawRect(x, y, x + delX, y + delY, p);
         p.setColor(0xFF940000);
@@ -256,18 +279,51 @@ public class DrawView extends View
         path3.lineTo(x - 15, y + delY - 10 + 5);
         path3.lineTo(x, y + delY - 15);
         path3.close();
-        canvas.drawPath(path3, p);
+        canvas.drawPath(path3, p);  //Rocket
+        x2 = x + delX/2;
+        y2 = y + delY/2;
+        rad = 50f;
+        p.setColor(Color.WHITE);
+        canvas.drawCircle(x2, y2, rad, p);
+        rad = 40f;
+        p.setColor(0xff91deff);
+        canvas.drawCircle(x2, y2, rad, p);
+
+
+        x = x - 15;
+        y = y + 38;
+        p.setColor(Color.YELLOW);
+        Path path5 = new Path();
+        path5.moveTo(x, y);
+        path5.lineTo(x - 35, y);
+        path5.lineTo(x - 70, y + 23);
+        path5.lineTo(x - 35, y + 45);
+        path5.lineTo(x, y + 45);
+        path5.close();
+        canvas.drawPath(path5, p);  //Inner Flame
+        y = y - 16;
+        p.setColor(0xbee37d24);
+        Path path4 = new Path();
+        path4.moveTo(x, y);
+        path4.lineTo(x - 70/2, y - 5);
+        path4.lineTo(x - 70, y - 5);
+        path4.lineTo(x - 100, y + 35);
+        path4.lineTo(x - 70, y + 80);
+        path4.lineTo(x - 70/2, y + 80);
+        path4.lineTo(x, y + 75);
+        path4.close();
+        canvas.drawPath(path4, p);  //Outer Flame
         canvas.restore();
 
         deg2 += dDeg2;
         deg2 %= 360;
-        if ((deg2 >= 335 && deg2 <= 360) || (deg2 >= 0 && deg2 <= 25))   //This line is wrong
+        if ((deg2 >= 335 && deg2 <= 360) || (deg2 >= 0 && deg2 <= 25))
         {
-            dDeg2 = 1;
+            dDeg2 = 0.2f;
         }
         else
         {
-            dDeg2 = 6;
+            dDeg2 = 6.5f;
         }
 
         deg += dDeg;
@@ -279,6 +335,7 @@ public class DrawView extends View
         {
             dDeg = -dDeg;
         }
+        count ++;
         invalidate();
     }
 
